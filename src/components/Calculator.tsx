@@ -68,6 +68,25 @@ const Calculator = () => {
     }
   };
 
+  // Calculate live result for display
+  const getLiveResult = () => {
+    if (operation && previousValue !== null && !waitingForOperand) {
+      const currentValue = parseFloat(display);
+      if (!isNaN(currentValue)) {
+        return calculate(previousValue, currentValue, operation);
+      }
+    }
+    return null;
+  };
+
+  const getDisplayValue = () => {
+    const liveResult = getLiveResult();
+    if (liveResult !== null) {
+      return `${display} = ${liveResult}`;
+    }
+    return display;
+  };
+
   const handleButtonClick = (value: string) => {
     switch (value) {
       case "0":
@@ -106,7 +125,7 @@ const Calculator = () => {
 
   return (
     <div className="bg-gray-900 rounded-3xl p-6 shadow-2xl border border-gray-700">
-      <Display value={display} />
+      <Display value={getDisplayValue()} />
       <ButtonGrid onButtonClick={handleButtonClick} />
     </div>
   );
